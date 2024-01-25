@@ -9,6 +9,15 @@
     <body>
         <h1 class="w3-center">My People</h1>
         <div id="peoplelist" class="w3-row"></div>
+
+        <div class="w3-container w3-card w3-padding w3-center w3-half" style="margin-left: 25%;margin-top: 50px;">
+            <input class="w3-input" type="text" id="inName" placeholder="Insert name" />
+            <input class="w3-input" type="text" id="inSurname" placeholder="Insert surname" />
+            <input class="w3-input" type="text" id="inJob" placeholder="Insert job" />
+            <input class="w3-input" type="date" id="inDob" placeholder="Insert dob" />
+            <input class="w3-button w3-blue w3-margin" type="button" value="Insert" onclick="insertPerson();" />
+        </div>
+
         <script src="homepage.js"></script>
     </body>
 </html>
