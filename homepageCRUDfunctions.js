@@ -74,15 +74,47 @@ function insertPerson()
    
 }
 
+function updatePerson()
+{
+    let toUpdate = 
+    {
+        name:document.getElementById("inName").value,
+        surname:document.getElementById("inSurname").value,
+        job:document.getElementById("inJob").value,
+        dob:document.getElementById("inDob").value
+    };
+
+    let id = document.getElementById("inId").value;
+
+    let jsonizzato = JSON.stringify(toUpdate);
+
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    let requestOptions = {
+        method: 'PUT',
+        headers: myHeaders,
+        body: jsonizzato
+    };
+
+    fetch("http://localhost:8080/people/"+id, requestOptions)
+    .then(response => renderAllPeople());
+   
+}
+
 let renderOnePerson = (person)=>
 {
-
+    
     return  `
                 <div class="w3-col m4 l4 w3-padding">
                     <div class="w3-card-4">
 
                         <header class="w3-container w3-orange">
-                            <h1>${person.name} ${person.surname} <button class="w3-pink w3-right" onclick="deletePerson(${person.id})">X</button></h1>
+                            <h1>
+                                ${person.name} ${person.surname} 
+                                <button class="w3-pink w3-right" onclick="renderUpdateForm(${person.id})">M</button>
+                                <button class="w3-pink w3-right" onclick="deletePerson(${person.id})">X</button>
+                                </h1>
                         </header>
                         
                         <div class="w3-container">
@@ -93,6 +125,27 @@ let renderOnePerson = (person)=>
                 </div>
             `;
 }
+
+let renderUpdateForm = (id) =>
+{
+    let pToUpdate = people.filter(p=>p.id==id)[0];
+
+
+    let htmlContent = `
+                        <div class="w3-container w3-card w3-padding w3-center w3-half w3-orange" style="margin-left: 25%;margin-top: 50px;">
+                                <h1 class="w3-pink">Modify Person</h1>
+                                <input class="w3-input" type="text" id="inName" value="${pToUpdate.name}" placeholder="Insert name" />
+                                <input class="w3-input" type="text" id="inSurname"  value="${pToUpdate.surname}" placeholder="Insert surname" />
+                                <input class="w3-input" type="text" id="inJob"  value="${pToUpdate.job}" placeholder="Insert job" />
+                                <input class="w3-input" type="date" id="inDob"  value="${pToUpdate.dob}" placeholder="Insert dob" />
+                                <input type="hidden" id="inId" value="${pToUpdate.id}" />
+                                <input class="w3-button w3-pink w3-margin" type="button" value="Save" onclick="updatePerson()" />
+                        </div>
+                      `;
+    fillPage(htmlContent);
+    clearSearch();
+}
+
 
 let renderForm = () =>
 {
