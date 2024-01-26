@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anagrafe</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="homepageCRUDfunctions.js"></script>
+</head>
+<body>
+    <div class="w3-bar w3-orange w3-padding w3-margin-bottom">
+        <button onclick="renderAllPeople();" class="w3-bar-item w3-button">All People</button>
+        <button onclick="renderForm();" class="w3-bar-item w3-button">Create Person</button>
+        <input id="searchValue" type="text" class="w3-bar-item w3-input" placeholder="Search..">
+        <button  onclick="renderFiltered();"class="w3-bar-item w3-button w3-pink">Search</button>
+    </div>
+
+    <div id="page"></div>
+
+    <script src="homepageCRUDinitialization.js"></script>
+</body>
+</html>
