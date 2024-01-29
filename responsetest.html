@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        input
+        {
+            margin-top: 15px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        //CHE CI PERMETTONO DI FARE AJAX
+        //Asynchronous Javascript And Xml (JSON)
+        //AJAX è Javascript che fa request e riceve response
+
+        //Libreria AXIOS -> è quella preferita dal signor Mark Zuckenberg
+        //ma react è stato creato da facebook
+        //è maggiormente compatibile e ottimizzato per quello che usa facebook
+
+        function mandaRequest()
+        {
+            let formOggettificata =
+            {
+                name:document.getElementById("inName").value,
+                surname:document.getElementById("inSurname").value,
+                job:document.getElementById("inJob").value,
+                dob:document.getElementById("inDob").value
+            }
+
+            let bodyRequest = JSON.stringify(formOggettificata);
+            let id = document.getElementById("inId").value;
+            let config = 
+            {
+                method: 'put',
+                maxBodyLength: Infinity,
+                url: 'http://localhost:8080/people/'+id,
+                headers: 
+                { 
+                    'Content-Type': 'application/json'
+                },
+                data : bodyRequest //il contenuto, il body
+            };
+
+            axios
+            .request(config)
+            .then((response) => 
+                {
+                    //Entro qui se lo status code è della famiglia 200 (o anche 300)
+                    let myDiv = document.getElementById("messaggioResponse");
+                    myDiv.innerHTML = "È andato tutto bene, la persona è stata modificata";
+                    myDiv.style.backgroundColor = "green";
+                }
+            )
+            .catch((error) => 
+                {
+
+                    //entro qui se lo status code è della famiglia 400 o 500, se è andata male
+                    //error è un oggetto che contiene tanta roba, in particolare la response
+                    let response = error.response;
+                    //della response posso prendere il body e lo status code
+                    let body = response.data;
+                    let statusCode = response.status;
+
+                    let myDiv = document.getElementById("messaggioResponse");
+                    myDiv.innerHTML = body;
+
+                    if(statusCode==406 || statusCode==400)//che per path variable tipo sbagliato il colore è orange
+                        myDiv.style.backgroundColor = "orange";
+
+                    // if(statusCode==400)//che per json sbagliati il colore è #ff8cec
+                    //     myDiv.style.backgroundColor = "#ff8cec";
+
+                    if(statusCode==403)//che per path variable tipo sbagliato il colore è #ff8cec
+                        myDiv.style.backgroundColor = "red";
+
+                }
+            );
+        }
+    </script>
+</head>
+<body>
+    <input type="text" id="inId" placeholder="inserisci id"/><br/>
+    <input type="text" id="inName" placeholder="inserisci name"/><br/>
+    <input type="text" id="inSurname" placeholder="inserisci surname"/><br/>
+    <input type="text" id="inJob" placeholder="inserisci lavoro"/><br/>
+    <input type="text" id="inDob" placeholder="inserisci data di nascita"/><br/>
+    <input type="button"  value="Modifica" onclick="mandaRequest()"/><br/>
+    <br/><br/><br/>
+    <div id="messaggioResponse"></div>
+</body>
+</html>
